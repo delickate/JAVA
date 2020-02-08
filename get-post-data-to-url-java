@@ -1,0 +1,38 @@
+Step 1:
+==============
+//SANI: Getting Key
+String sURL = "http://rims.punjab.gov.pk/api/databaseupdate/formkey";
+try 
+{
+	Content content= Request.Get(sURL).execute().returnContent();
+    String data= content.asString();
+    JSONObject jsonObject = new JSONObject(data);
+    String value= jsonObject.getString("key");
+    jLabel1.setText(value);
+    
+} catch (JSONException e) {
+    e.printStackTrace();
+}       catch (Exception ex) {
+            Logger.getLogger(Check.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+
+Step 2:
+====================================================
+//SANI: Post Data
+try 
+{
+	String st = "{\"pntn\":\"11111111\",\"branchcode\":\"BR11111111560\",\"invoice_number\":\"431-01\",\"invoice_date\": \"2015-08-04\",\"invoice_time\": \"02:41\",\"discount_percent\": \"2\",\"discount_amount\": \"0\",\"service_charges_percent\": \"5\",\"service_charges_amount\": \"0\",\"tax_percent\":\"16\",\"table_no\": \"1\",\"phone\": \"042456456\",\"customer_name\": \"Sani\",\"detail\":[{\"item_code\":\"34\",                \"item\":\"Piza\", \"quantity\":\"1\",\"unit_price\":\"725\"}, {\"item_code\":\"23\", \"item\":\"Korma\", \"quantity\":\"12\", \"unit_price\":\"185\"}]}";
+    
+    Content  getResponse;
+    // Request.Post("http://rims.punjab.gov.pk/api/databaseupdate/formdata")
+    getResponse = Request.Post("http://localhost:99/rims.punjab.gov.pk/api/databaseupdate/formdata")
+                    .bodyForm(Form.form().add("key",  jLabel1.getText()).add("data",  st).build())
+                    .execute().returnContent();
+       
+            jLabel2.setText(getResponse.toString());
+} catch (IOException ex) {
+            Logger.getLogger(Check.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+    }    
